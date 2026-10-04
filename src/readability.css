@@ -1,0 +1,156 @@
+/* Keep editorial typography generous without making body copy miniature. */
+.site-header nav {
+  font-size: 12px;
+}
+.hero-role > span {
+  font-size: 12px;
+}
+.hero-description {
+  font-size: 14px;
+}
+.button,
+.text-link {
+  font-size: 12px;
+}
+.section-heading > p,
+.journey-intro p {
+  font-size: 14px;
+}
+.lens-content p {
+  font-size: 14px;
+}
+.project-copy > p {
+  font-size: 14px;
+  max-width: 390px;
+}
+.project-copy h4 {
+  font-size: 14px;
+  max-width: 390px;
+}
+.tags span {
+  font-size: 10px;
+}
+.project-copy .label {
+  font-size: 9px;
+}
+.work-filters button {
+  font-size: 12px;
+}
+.lifecycle-nav button {
+  font-size: 12px;
+}
+.stage-panel p {
+  font-size: 13px;
+}
+.lca-note > p {
+  font-size: 12px;
+}
+.lca-note small {
+  font-size: 10px;
+}
+.lca-note .text-link {
+  font-size: 11px;
+}
+.about-copy > p {
+  font-size: 14px;
+}
+.journey-item p,
+.additional p {
+  font-size: 13px;
+}
+.journey-item div > span {
+  font-size: 12px;
+}
+.journey-item time {
+  font-size: 10px;
+}
+.publication-feature p {
+  font-size: 13px;
+}
+.skill-column li {
+  font-size: 13px;
+}
+.recognition p {
+  font-size: 12px;
+}
+.cert-grid p {
+  font-size: 13px;
+}
+.contact-bottom > p,
+.contact-links a {
+  font-size: 14px;
+}
+.case-sections p {
+  font-size: 14px;
+}
+.case-sections h3 {
+  font-size: 14px;
+}
+@media (max-width: 1050px) {
+  .lifecycle-nav button {
+    font-size: 10px;
+  }
+  .project-copy > p {
+    font-size: 13px;
+  }
+}
+@media (max-width: 760px) {
+  .hero-role > span {
+    font-size: 11px;
+  }
+  .hero-description {
+    font-size: 13px;
+  }
+  .section-heading > p,
+  .lens-content p {
+    font-size: 13px;
+  }
+  .button,
+  .text-link {
+    font-size: 11px;
+  }
+  .work-filters {
+    gap: 14px;
+  }
+  .work-filters button {
+    font-size: 10px;
+  }
+  .project-copy > p,
+  .project-copy h4 {
+    font-size: 13px;
+  }
+  .project-copy .label {
+    font-size: 8px;
+  }
+  .tags span {
+    font-size: 9px;
+  }
+  .lifecycle-nav button {
+    font-size: 10px;
+  }
+  .stage-panel p {
+    font-size: 12px;
+  }
+  .about-copy > p {
+    font-size: 14px;
+  }
+  .journey-item p {
+    font-size: 12px;
+  }
+  .journey-item div > span {
+    font-size: 11px;
+  }
+  .journey-item time {
+    font-size: 9px;
+  }
+  .recognition p {
+    font-size: 11px;
+  }
+  .contact-bottom > p,
+  .contact-links a {
+    font-size: 12px;
+  }
+  .case-sections p {
+    font-size: 13px;
+  }
+}

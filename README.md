@@ -61,4 +61,3 @@ The downloaded original CV contains the personal and reference details supplied 
 ## Validation
 
 Production build and Chromium browser checks cover desktop, phone and tablet widths; navigation; filters; case-study open/close/focus; keyboard life-cycle controls; experience/education switching; supplied URLs; downloadable CV; reduced motion; WebGL fallback; horizontal overflow and console errors. See `VERIFICATION.md` for the recorded results and limitations.
-
