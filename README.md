@@ -37,8 +37,10 @@ For Netlify, Cloudflare Pages or Vercel, use `npm run build` and output director
 - `src/content.js`: verified project summaries, exact report URLs, experience, education, contact details and the conceptual life-cycle stages.
 - `src/main.jsx`: page sections, publications, certifications, contact area and accessible interactions.
 - `src/styles.css` and `src/readability.css`: design tokens, typography, responsive layouts and supporting text sizes.
-- `src/Ecosystem.jsx`: procedural Three.js / React Three Fiber landscape sculpture, material settings, gentle pointer response and scroll separation.
-- `src/ProjectArt.jsx`: original vector illustrations for editorial case studies.
+- `src/Ecosystem.jsx`: persistent React Three Fiber sculpture, studio lighting, refractive ribbons, instanced meadow, particles and damped pointer response.
+- `src/sceneGeometry.js`: deterministic organic terrain, branched roots, contour paths and curved ribbon geometry.
+- `src/motion.css`: focused scroll-story and project-depth refinements layered over the existing design.
+- `src/ProjectArt.jsx`: original vector illustrations, with restrained pointer tilt and scroll depth for the grain and LCA artworks.
 - `public/portrait.webp`: resized/encoded supplied portrait. The face has not been retouched or warped.
 - `public/goutham-nidhi-cv.pdf`: supplied CV, available for download.
 
@@ -48,7 +50,9 @@ Keep supplied report URLs intact, including query parameters. External reports a
 
 React 19, Vite, Three.js, React Three Fiber, GSAP ScrollTrigger, Lucide icons. Fonts (DM Sans and Libre Caslon Display) are bundled locally through Fontsource; no runtime font service or API keys are required.
 
-The scene separates into food, water and soil layers as the opening narrative scrolls. Perspective buttons provide food/environment/people interpretations. The artwork is conceptual, not an environmental dataset. The hero can be paused. Rendering stops when the scene is offscreen or the tab is hidden; mobile pixel density is capped. Three.js is dynamically imported, with a CSS specimen for reduced motion, missing WebGL, context loss and scene-load errors. Native scrolling is retained.
+One canvas stays with the opening narrative. GSAP ScrollTrigger coordinates food systems → environment → people → life cycle: planted terrain opens into lobes, resource ribbons move between them, and six connected nodes reorganise into a cycle. Camera, lighting and materials change gently with the same progress value. Perspective buttons also select each chapter directly. The artwork is conceptual, not an environmental dataset.
+
+The sculpture can be paused, including its pointer response. Rendering stops offscreen or when the tab is hidden. Mobile uses fewer plants and particles, capped pixel density, and a compact layout without the long pinned story. Reduced motion and missing WebGL use a CSS specimen. Three.js is dynamically imported; no external models, texture downloads or HDR services are required. Native scrolling is retained.
 
 Case studies use a native modal dialog with Escape, focus trapping and focus restoration. The life-cycle explorer supports arrow keys, Home and End. All controls are keyboard accessible, the page has a skip link, and mobile navigation supports Escape.
 

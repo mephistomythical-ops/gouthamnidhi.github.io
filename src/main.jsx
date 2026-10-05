@@ -36,6 +36,7 @@ import "./styles.css";
 import "@fontsource-variable/dm-sans/wght.css";
 import "@fontsource/libre-caslon-display/latin-400.css";
 import "./readability.css";
+import "./motion.css";
 const Ecosystem = lazy(() => import("./Ecosystem"));
 gsap.registerPlugin(ScrollTrigger);
 const external = { target: "_blank", rel: "noopener noreferrer" };
@@ -83,6 +84,9 @@ function App() {
     [visible, setVisible] = useState(true),
     [gpu, setGpu] = useState(true);
   const progress = useRef(0),
+    motionTarget = useRef({ phase: 0 }),
+    manualPerspective = useRef(false),
+    pauseState = useRef(false),
     story = useRef(),
     scene = useRef(),
     dialog = useRef(),
@@ -122,34 +126,94 @@ function App() {
   }, []);
   useEffect(() => {
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: story.current,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (s) => {
-          progress.current = s.progress;
-        },
-      });
-      if (!reduced) {
-        gsap.utils
-          .toArray(".reveal")
-          .forEach((el) =>
-            gsap.fromTo(
-              el,
-              { y: 25, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.85,
-                ease: "power2.out",
-                scrollTrigger: { trigger: el, start: "top 94%", once: true },
+      const media = gsap.matchMedia();
+      if (!reduced && gpu)
+        media.add("(min-width: 761px)", () => {
+          gsap.fromTo(
+            motionTarget.current,
+            { phase: 0 },
+            {
+              phase: 4,
+              ease: "none",
+              scrollTrigger: {
+                trigger: story.current,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.15,
+                invalidateOnRefresh: true,
               },
-            ),
+              onUpdate: () => {
+                if (pauseState.current || manualPerspective.current) return;
+                const p = motionTarget.current.phase;
+                progress.current = p;
+                setFocus(
+                  p < 0.65
+                    ? "all"
+                    : p < 1.65
+                      ? "food"
+                      : p < 2.65
+                        ? "environment"
+                        : p < 3.65
+                          ? "people"
+                          : "lifecycle",
+                );
+              },
+            },
           );
+        });
+      if (!reduced) {
+        gsap.fromTo(
+          ".hero-copy h1",
+          { y: 18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.25, ease: "power3.out" },
+        );
+        gsap.utils.toArray(".reveal").forEach((el) =>
+          gsap.fromTo(
+            el,
+            { y: 25, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.85,
+              ease: "power2.out",
+              scrollTrigger: { trigger: el, start: "top 94%", once: true },
+            },
+          ),
+        );
       }
     });
     return () => ctx.revert();
-  }, [reduced]);
+  }, [reduced, gpu]);
+  useEffect(() => {
+    pauseState.current = paused;
+  }, [paused]);
+  useEffect(() => {
+    const resume = () => {
+      manualPerspective.current = false;
+    };
+    window.addEventListener("scroll", resume, { passive: true });
+    return () => window.removeEventListener("scroll", resume);
+  }, []);
+  useEffect(() => {
+    if (reduced || paused) return;
+    const tween = gsap.fromTo(
+      ".lens-content",
+      { opacity: 0.45, y: 9 },
+      { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+    );
+    return () => tween.kill();
+  }, [focus, reduced, paused]);
+  function choosePerspective(value) {
+    manualPerspective.current = true;
+    setFocus(value);
+    progress.current = {
+      all: 0,
+      food: 1,
+      environment: 2,
+      people: 3,
+      lifecycle: 4,
+    }[value];
+  }
   useEffect(() => {
     if (selected) {
       lastFocus.current = document.activeElement;
@@ -191,6 +255,10 @@ function App() {
     people: [
       "People belong in the picture.",
       "Foodscapes are shaped by culture, access and community. Social context gives environmental research its purpose.",
+    ],
+    lifecycle: [
+      "Every product is part of a longer story.",
+      "Follow the whole system. Make boundaries explicit. Let evidence guide the conclusions.",
     ],
   };
   const filtered = projects.filter(
@@ -245,7 +313,12 @@ function App() {
         </nav>
       </header>
       <main id="main">
-        <div className="story" id="top" ref={story}>
+        <div
+          className={`story ${reduced || !gpu ? "motion-reduced" : ""}`}
+          id="top"
+          ref={story}
+          data-perspective={focus}
+        >
           <section className="hero-copy" aria-labelledby="hero-title">
             <div className="eyebrow">
               <span className="status-dot" /> FOOD SYSTEMS · SUSTAINABILITY ·
@@ -290,7 +363,17 @@ function App() {
             <div className="scene-sticky" ref={scene}>
               <div className="scene-topline">
                 <span>FIELD NOTES / 001</span>
-                <span>A LIVING SYSTEM</span>
+                <span>
+                  {
+                    {
+                      all: "A LIVING SYSTEM",
+                      food: "01 / FOOD SYSTEMS",
+                      environment: "02 / ENVIRONMENT",
+                      people: "03 / PEOPLE",
+                      lifecycle: "04 / LIFE CYCLE",
+                    }[focus]
+                  }
+                </span>
               </div>
               <div
                 className="scene-canvas"
@@ -301,7 +384,6 @@ function App() {
                   <SceneBoundary fallback={<StaticSpecimen />}>
                     <Suspense fallback={<StaticSpecimen />}>
                       <Ecosystem
-                        focus={focus}
                         progress={progress}
                         paused={paused || !visible}
                         onError={() => setGpu(false)}
@@ -313,16 +395,28 @@ function App() {
                 )}
               </div>
               <div className="specimen-label label-land">
-                <i /> CULTIVATION
+                <i /> {focus === "people" ? "SHARED RESOURCES" : "CULTIVATION"}
               </div>
               <div className="specimen-label label-water">
-                <i /> RESOURCE FLOWS
+                <i />{" "}
+                {focus === "lifecycle" ? "CIRCULAR PATHWAYS" : "RESOURCE FLOWS"}
               </div>
               <div className="specimen-label label-soil">
                 <i /> LIVING FOUNDATIONS
               </div>
               <div className="scene-bottom">
-                <span>FOOD + PEOPLE + PLANET</span>
+                <span className="scene-chapters" aria-hidden="true">
+                  {["food", "environment", "people", "lifecycle"].map(
+                    (v, i) => (
+                      <i key={v} className={focus === v ? "active" : ""}>
+                        <b>0{i + 1}</b>
+                        <span>
+                          {v === "lifecycle" ? "LIFE CYCLE" : v.toUpperCase()}
+                        </span>
+                      </i>
+                    ),
+                  )}
+                </span>
                 {gpu && !reduced && (
                   <button
                     onClick={() => setPaused(!paused)}
@@ -336,36 +430,72 @@ function App() {
             </div>
           </div>
           <section className="systems-copy" aria-labelledby="systems-title">
-            <Label>01 / A CONNECTED PERSPECTIVE</Label>
-            <h2 id="systems-title">
-              One system.
-              <br />
-              <em>Many relationships.</em>
-            </h2>
-            <div
-              className="lens-tabs"
-              role="group"
-              aria-label="Explore ecosystem perspectives"
-            >
-              {["all", "food", "environment", "people"].map((f) => (
-                <button
-                  key={f}
-                  aria-pressed={f === focus}
-                  onClick={() => setFocus(f)}
-                >
-                  {f === "all"
-                    ? "Whole system"
-                    : f[0].toUpperCase() + f.slice(1)}
-                </button>
-              ))}
+            <div className="systems-inner">
+              <Label>01 / A CONNECTED PERSPECTIVE</Label>
+              <h2 id="systems-title">
+                One system.
+                <br />
+                <em>Many relationships.</em>
+              </h2>
+              <div
+                className="lens-tabs"
+                role="group"
+                aria-label="Explore ecosystem perspectives"
+              >
+                {["all", "food", "environment", "people", "lifecycle"].map(
+                  (f) => (
+                    <button
+                      key={f}
+                      aria-pressed={f === focus}
+                      onClick={() => choosePerspective(f)}
+                    >
+                      {f === "all"
+                        ? "Whole system"
+                        : f === "lifecycle"
+                          ? "Life cycle"
+                          : f[0].toUpperCase() + f.slice(1)}
+                    </button>
+                  ),
+                )}
+              </div>
+              <div className="lens-content" aria-live="polite">
+                <h3>{lenses[focus][0]}</h3>
+                <p>{lenses[focus][1]}</p>
+              </div>
+              <span className="quiet-note">
+                An abstract view of interconnected systems.
+              </span>
+              <div className="story-progress" aria-hidden="true">
+                <span>
+                  {
+                    {
+                      all: "00",
+                      food: "01",
+                      environment: "02",
+                      people: "03",
+                      lifecycle: "04",
+                    }[focus]
+                  }
+                </span>
+                <i>
+                  <b
+                    style={{
+                      transform: `scaleX(${{ all: 0, food: 0.25, environment: 0.5, people: 0.75, lifecycle: 1 }[focus]})`,
+                    }}
+                  />
+                </i>
+                <span>04</span>
+              </div>
+              <a
+                className="text-link story-next"
+                href={focus === "lifecycle" ? "#approach" : "#work"}
+              >
+                {focus === "lifecycle"
+                  ? "Explore life cycle thinking"
+                  : "Explore the research"}{" "}
+                <ArrowDown size={14} />
+              </a>
             </div>
-            <div className="lens-content" aria-live="polite">
-              <h3>{lenses[focus][0]}</h3>
-              <p>{lenses[focus][1]}</p>
-            </div>
-            <span className="quiet-note">
-              An abstract view of interconnected systems.
-            </span>
           </section>
         </div>
         <div className="discipline-strip">
@@ -953,4 +1083,7 @@ function App() {
     </>
   );
 }
-createRoot(document.getElementById("root")).render(<App />);
+const appRoot =
+  import.meta.hot?.data.root ?? createRoot(document.getElementById("root"));
+if (import.meta.hot) import.meta.hot.data.root = appRoot;
+appRoot.render(<App />);
