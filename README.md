@@ -28,7 +28,7 @@ Upload the contents of `dist/` to a static host. The relative Vite base supports
 2. Open **Actions → Deploy GitHub Pages → Run workflow** on `main`.
 3. Wait for success and use the URL returned by the deployment job.
 
-The separate build workflow runs automatically on pushes and pull requests. Publishing is a manual workflow so uploading source never changes your existing portfolio. The workflow only targets this repository. To enable continuous deployment later, add a `push` trigger for `main` to `deploy.yml`.
+The deployment workflow builds and publishes `dist/` automatically on pushes to `main`; it can also be run manually. The separate build workflow checks pushes and pull requests. Pages must use **GitHub Actions** as its source: publishing the repository root directly serves the development HTML and produces a blank page. This workflow only targets this repository and does not change the separate existing portfolio repository.
 
 For Netlify, Cloudflare Pages or Vercel, use `npm run build` and output directory `dist`, with Node 22.12+.
 
