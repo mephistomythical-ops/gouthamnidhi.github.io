@@ -32,6 +32,7 @@ import {
   email,
 } from "./content";
 import ProjectArt from "./ProjectArt";
+import Coursework from "./Coursework";
 import "./styles.css";
 import "@fontsource-variable/dm-sans/wght.css";
 import "@fontsource/libre-caslon-display/latin-400.css";
@@ -92,6 +93,16 @@ function App() {
     dialog = useRef(),
     lastFocus = useRef(),
     nav = useRef();
+  useEffect(() => {
+    if (!location.hash) return;
+    let cancelled = false;
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+      const target = document.getElementById(location.hash.slice(1));
+      target?.scrollIntoView({ behavior: "instant", block: "start" });
+    });
+    return () => { cancelled = true; };
+  }, []);
   useEffect(() => {
     const mq = matchMedia("(prefers-reduced-motion: reduce)");
     const change = () => setReduced(mq.matches);
@@ -586,6 +597,7 @@ function App() {
               </article>
             ))}
           </div>
+          <Coursework />
         </section>
         <section className="lifecycle-section" id="approach">
           <div className="section-heading reveal">

@@ -35,6 +35,7 @@ For Netlify, Cloudflare Pages or Vercel, use `npm run build` and output director
 ## Content and design updates
 
 - `src/content.js`: verified project summaries, exact report URLs, experience, education, contact details and the conceptual life-cycle stages.
+- `src/courseworkData.js`: six coursework summaries, authorship, contribution notes and supplied report URLs. `src/Coursework.jsx` and `src/coursework.css` render the compact, responsive coursework section under the main projects.
 - `src/main.jsx`: page sections, publications, certifications, contact area and accessible interactions.
 - `src/styles.css` and `src/readability.css`: design tokens, typography, responsive layouts and supporting text sizes.
 - `src/Ecosystem.jsx`: persistent React Three Fiber sculpture, studio lighting, refractive ribbons, instanced meadow, particles and damped pointer response.

@@ -1,0 +1,32 @@
+.coursework { margin-top: 100px; border-top: 1px solid var(--line); padding-top: 48px; }
+.coursework-heading { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 40px; }
+.coursework-heading h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 3.4vw, 50px); line-height: 1.1; margin: 18px 0 0; }
+.coursework-heading h3 em { font-style: normal; color: #7c896a; }
+.coursework-heading > p { max-width: 335px; margin: 0; font-size: 13px; color: var(--muted); }
+.coursework-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 7%; align-items: start; }
+.coursework-item { padding: 28px 0 32px; border-top: 1px solid var(--line); min-width: 0; }
+.coursework-meta { display: flex; align-items: center; gap: 18px; font-size: 9px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+.coursework-meta > span:first-child { color: #7c896a; }
+.coursework-item h4 { margin: 16px 0 7px; font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1.15; max-width: 460px; }
+.coursework-course { margin: 0 0 16px; font-size: 10px; color: var(--muted); }
+.coursework-summary, .coursework-role, .coursework-detail-copy p { font-size: 13px; line-height: 1.75; margin: 0 0 17px; color: var(--muted); max-width: 490px; }
+.coursework-role { color: var(--ink); padding-left: 14px; border-left: 2px solid #a6b292; font-size: 12px; }
+.coursework-item .tags { margin: 18px 0; }
+.coursework-details summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; font-size: 12px; border-top: 1px solid var(--line); }
+.coursework-details summary::-webkit-details-marker { display: none; }
+.coursework-details summary svg { transition: transform .25s ease; }
+.coursework-details[open] summary svg { transform: rotate(45deg); }
+.coursework-detail-copy { padding: 7px 0 0; }
+.coursework-detail-copy .coursework-team { font-size: 11px; }
+.coursework-team strong { color: var(--ink); font-weight: 500; }
+.coursework-report { margin-top: 12px; }
+@media (max-width: 760px) {
+  .coursework { margin-top: 65px; padding-top: 35px; }
+  .coursework-heading { display: block; margin-bottom: 28px; }
+  .coursework-heading > p { margin-top: 20px; }
+  .coursework-grid { grid-template-columns: 1fr; }
+  .coursework-item h4 { font-size: 29px; }
+  .coursework-details summary { min-height: 44px; }
+  .coursework-report { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .coursework-details summary svg { transition: none; } }

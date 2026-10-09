@@ -1,4 +1,18 @@
-# Verification — updated 5 October 2026
+# Verification — updated 9 October 2026
+
+## Coursework addition — 9 October
+
+- Reviewed six supplied reports; checked overview pages visually and relevant methods/conclusions as text. Source mapping is recorded in `CONTENT_SOURCES.md`.
+- Added six coursework entries after the five original case studies, without changing existing section order, typography, palette, project content or 3D scenes.
+- Five individual entries and one group proposal; the group contribution and all four authors are explicitly credited.
+- Production build passed. Desktop and 390 px phone views were visually inspected with no horizontal overflow or recorded browser errors.
+- All six approach disclosures opened through keyboard input. Report links retain the exact supplied URLs, open in a new tab and use `noopener noreferrer`.
+- Unauthenticated HTTP checks returned all six matching Google Drive report titles with status 200 and no sign-in redirect. This does not guarantee future Drive permissions.
+- The coursework deep link lands below the fixed header on mobile (81.92 px for an 82 px offset). Opening disclosures refreshes scroll-animation measurements.
+
+## Public deployment repair — 7 October
+
+GitHub Pages was changed from serving the source branch directly to publishing the production build with GitHub Actions. The deployment succeeded, the live page and case-study interaction were checked, and the JavaScript, stylesheet, 3D bundle, portrait, favicon and CV all returned HTTP 200. Pushes to `main` now deploy automatically.
 
 ## Second-pass motion refinement
 
@@ -37,4 +51,4 @@ Browser checks used desktop Chromium with mobile viewport/touch emulation. Physi
 
 The nine Drive files were readable through the user's connected Drive account. Exact URL verification does not certify that each file is shared publicly; report access remains governed by Google Drive permissions. LinkedIn could not be independently retrieved.
 
-Public hosting is not claimed as verified. The repository includes an automatic build workflow and a manually triggered GitHub Pages deployment workflow; enable Pages in the new repository and run the deployment to publish it. The existing portfolio repository was not modified.
+The original validation did not include public hosting; that limitation was resolved by the 7 October deployment repair recorded above. The separate existing portfolio repository was not modified.
